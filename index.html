@@ -2,184 +2,182 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>🎆 Chúc Mừng Năm Mới 2026 🎆</title>
+<title>🎇 Happy New Year 2026 🎇</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+    height:100vh;
+    overflow:hidden;
+    background: radial-gradient(circle at bottom, #020024, #090979, #000);
+    font-family:'Orbitron',sans-serif;
+    color:#fff;
 }
 
-body {
-    overflow: hidden;
-    height: 100vh;
-    background: linear-gradient(180deg, #020111, #191970, #000);
-    font-family: 'Montserrat', sans-serif;
-    color: #fff;
+/* SAO BAY */
+.stars{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:url("https://raw.githubusercontent.com/JulianLaval/canvas-particle-network/master/img/stars.png");
+    animation: moveStars 120s linear infinite;
+    z-index:0;
+}
+@keyframes moveStars{
+    from{background-position:0 0}
+    to{background-position:10000px 5000px}
 }
 
-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 0;
+canvas{
+    position:fixed;
+    top:0;left:0;
+    z-index:1;
 }
 
-.container {
-    position: relative;
-    z-index: 2;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+.center{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    text-align:center;
+    z-index:2;
 }
 
-h1 {
-    font-family: 'Dancing Script', cursive;
-    font-size: 4.5rem;
-    color: gold;
-    text-shadow: 0 0 20px gold, 0 0 40px red;
+h1{
+    font-family:'Dancing Script',cursive;
+    font-size:4.5rem;
+    color:gold;
+    text-shadow:0 0 20px gold,0 0 60px red;
     animation: float 3s ease-in-out infinite;
 }
 
-.year {
-    font-size: 5rem;
-    font-weight: 600;
-    color: #ff5252;
-    margin: 10px 0;
-    animation: glow 2s infinite alternate;
+.year{
+    font-size:6rem;
+    color:#ff5252;
+    text-shadow:0 0 30px red,0 0 80px gold;
+    animation: pulse 1.5s infinite alternate;
 }
 
-p {
-    font-size: 1.4rem;
-    color: #ffeb3b;
-    margin-top: 10px;
+.countdown{
+    margin-top:20px;
+    font-size:1.5rem;
+    color:#00e5ff;
 }
 
-.signature {
-    margin-top: 30px;
-    font-size: 1.1rem;
-    opacity: 0.85;
+.msg{
+    margin-top:15px;
+    font-size:1.4rem;
+    color:#ffeb3b;
 }
 
-@keyframes glow {
-    from { text-shadow: 0 0 10px #ff5252; }
-    to { text-shadow: 0 0 30px gold, 0 0 60px red; }
+@keyframes float{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-20px)}
 }
-
-@keyframes float {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
+@keyframes pulse{
+    from{transform:scale(1)}
+    to{transform:scale(1.1)}
 }
 </style>
 </head>
 
 <body>
-
+<div class="stars"></div>
 <canvas id="fireworks"></canvas>
 
-<div class="container">
+<div class="center">
     <h1>🎉 Chúc Mừng Năm Mới 🎉</h1>
     <div class="year">2026</div>
-    <p>✨ An Khang – Thịnh Vượng – Vạn Sự Như Ý ✨</p>
-    <div class="signature">💖 Chúc bạn một năm tràn đầy may mắn</div>
+    <div class="countdown" id="countdown"></div>
+    <div class="msg">✨ An Khang – Thịnh Vượng – Vạn Sự Như Ý ✨</div>
 </div>
 
 <script>
-const canvas = document.getElementById("fireworks");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-window.addEventListener("resize", () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-});
-
-class Firework {
-    constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = canvas.height;
-        this.targetY = Math.random() * canvas.height / 2;
-        this.color = `hsl(${Math.random() * 360},100%,60%)`;
-        this.exploded = false;
-        this.particles = [];
+/* COUNTDOWN */
+function updateCountdown(){
+    const newYear = new Date("2026-01-01T00:00:00");
+    const now = new Date();
+    const diff = newYear - now;
+    if(diff <= 0){
+        document.getElementById("countdown").innerHTML = "🎆 HAPPY NEW YEAR 2026 🎆";
+        return;
     }
+    const d = Math.floor(diff/1000/60/60/24);
+    const h = Math.floor(diff/1000/60/60)%24;
+    const m = Math.floor(diff/1000/60)%60;
+    const s = Math.floor(diff/1000)%60;
+    document.getElementById("countdown").innerHTML =
+        `⏳ ${d} ngày ${h} giờ ${m} phút ${s} giây`;
+}
+setInterval(updateCountdown,1000);
+updateCountdown();
 
-    update() {
-        if (!this.exploded) {
-            this.y -= 6;
-            if (this.y <= this.targetY) {
-                this.explode();
-                this.exploded = true;
+/* PHÁO HOA */
+const canvas=document.getElementById("fireworks");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;canvas.height=innerHeight;
+addEventListener("resize",()=>{canvas.width=innerWidth;canvas.height=innerHeight});
+
+class Firework{
+    constructor(){
+        this.x=Math.random()*canvas.width;
+        this.y=canvas.height;
+        this.targetY=Math.random()*canvas.height/2;
+        this.color=`hsl(${Math.random()*360},100%,60%)`;
+        this.exploded=false;
+        this.particles=[];
+    }
+    update(){
+        if(!this.exploded){
+            this.y-=7;
+            if(this.y<=this.targetY){
+                this.exploded=true;
+                for(let i=0;i<120;i++){
+                    this.particles.push(new Particle(this.x,this.y,this.color));
+                }
             }
         }
-        this.particles.forEach(p => p.update());
+        this.particles.forEach(p=>p.update());
     }
-
-    draw() {
-        if (!this.exploded) {
-            ctx.fillStyle = this.color;
+    draw(){
+        if(!this.exploded){
+            ctx.fillStyle=this.color;
             ctx.beginPath();
-            ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+            ctx.arc(this.x,this.y,3,0,Math.PI*2);
             ctx.fill();
         }
-        this.particles.forEach(p => p.draw());
-    }
-
-    explode() {
-        for (let i = 0; i < 70; i++) {
-            this.particles.push(new Particle(this.x, this.y, this.color));
-        }
+        this.particles.forEach(p=>p.draw());
     }
 }
-
-class Particle {
-    constructor(x, y, color) {
-        this.x = x;
-        this.y = y;
-        this.color = color;
-        this.speedX = (Math.random() - 0.5) * 8;
-        this.speedY = (Math.random() - 0.5) * 8;
-        this.life = 120;
+class Particle{
+    constructor(x,y,c){
+        this.x=x;this.y=y;this.c=c;
+        this.vx=(Math.random()-0.5)*10;
+        this.vy=(Math.random()-0.5)*10;
+        this.life=140;
     }
-
-    update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        this.life--;
-    }
-
-    draw() {
-        if (this.life > 0) {
-            ctx.fillStyle = this.color;
+    update(){this.x+=this.vx;this.y+=this.vy;this.life--}
+    draw(){
+        if(this.life>0){
+            ctx.fillStyle=this.c;
             ctx.beginPath();
-            ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+            ctx.arc(this.x,this.y,2,0,Math.PI*2);
             ctx.fill();
         }
     }
 }
-
-let fireworks = [];
-
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    if (Math.random() < 0.06) fireworks.push(new Firework());
-    fireworks.forEach(f => {
-        f.update();
-        f.draw();
-    });
-    fireworks = fireworks.filter(f => f.particles.some(p => p.life > 0));
+let fireworks=[];
+function animate(){
+    ctx.fillStyle="rgba(0,0,0,0.25)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    if(Math.random()<0.08)fireworks.push(new Firework());
+    fireworks.forEach(f=>{f.update();f.draw()});
+    fireworks=fireworks.filter(f=>f.particles.some(p=>p.life>0));
     requestAnimationFrame(animate);
 }
-
 animate();
 </script>
-
 </body>
 </html>
